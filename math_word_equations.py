@@ -51,7 +51,4 @@ if __name__ == "__main__":
     word_doc = Document()
     populate_word_doc(word_doc, task_division)
     filename = input("Podaj nazwę pliku wynikowego: ")
-    word_doc.save(filename + ".docx")
-
-
-pass
+    word_doc.save("sprawdzian/" + filename + ".docx")
