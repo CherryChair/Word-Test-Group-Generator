@@ -30,18 +30,18 @@ def make_columns_bold(*columns):
 
 def populate_word_doc(document, task_division):
     people_number = len(task_division)
-    tasks_number = len(task_division[1])
+    tasks_number = len(task_division[0])
     table = document.add_table(people_number + 1, 2)
     table.cell(0, 0).text = "Nr"
     table.cell(0, 1).text = "Zadania"
     for person_number in range(1, people_number + 1):
         table.cell(person_number, 0).text = f"{person_number}"
-        cell = table.cell(person_number-1, 1)
+        cell = table.cell(person_number, 1)
         paragraph = cell.paragraphs[0]
         run = paragraph.add_run()
         for task_number in range(1, tasks_number + 1):
-            current_task = task_division[person_number][task_number - 1]
-            run.add_picture("pics/" + current_task + ".png", width=Cm(9.0))
+            current_task = task_division[person_number - 1][task_number - 1]
+            run.add_picture("zadania/" + current_task + ".png", width=Cm(16.0))
     make_rows_bold(table.rows[0])
     make_columns_bold(table.columns[0])
 
@@ -50,5 +50,5 @@ if __name__ == "__main__":
     task_division = get_task_division()
     word_doc = Document()
     populate_word_doc(word_doc, task_division)
-    filename = input("Podaj nazwę pliku wynikowego: ")
-    word_doc.save("sprawdzian/" + filename + ".docx")
+    filename = input("Podaj nazwę pliku sprawdzianu: ")
+    word_doc.save("sprawdziany/" + filename + ".docx")

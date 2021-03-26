@@ -33,7 +33,7 @@ def create_task_division(info_table):
 
     for i in range(1, groups_number + 1):
         for j in range(1, tasks_number + 1):
-            exec(f"task_dict[{i}].append('{j}.{i}')")
+            exec(f"task_dict[{i}].append('{j}_{i}')")
 
     free_people = []
 
@@ -45,6 +45,6 @@ def create_task_division(info_table):
             chosen_people = set(random.sample(free_people[task-1], group_task_divison[group-1]))
             free_people[task-1].difference_update(chosen_people)
             for person in chosen_people:
-                task_dict[person].append(f"{task}.{group}")
+                task_dict[person].append(f"{task}_{group}")
 
     return task_dict
