@@ -20,13 +20,20 @@ def make_rows_bold(*rows):
                     run.font.bold = True
 
 
+def make_columns_bold(*columns):
+    for column in columns:
+        for cell in column.cells:
+            for paragraph in cell.paragraphs:
+                for run in paragraph.runs:
+                    run.font.bold = True
+
+
 def populate_word_doc(document, task_division):
     people_number = len(task_division)
     tasks_number = len(task_division[1])
     table = document.add_table(people_number + 1, 2)
     table.cell(0, 0).text = "Nr"
     table.cell(0, 1).text = "Zadania"
-    table.cell(0, 1).paragraphs[0].runs[0].font.bold = True
     for person_number in range(1, people_number + 1):
         table.cell(person_number, 0).text = f"{person_number}"
         cell = table.cell(person_number-1, 1)
@@ -36,6 +43,7 @@ def populate_word_doc(document, task_division):
             current_task = task_division[person_number][task_number - 1]
             run.add_picture("pics/" + current_task + ".png", width=Cm(9.0))
     make_rows_bold(table.rows[0])
+    make_columns_bold(table.columns[0])
 
 
 if __name__ == "__main__":
