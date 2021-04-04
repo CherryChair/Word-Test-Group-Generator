@@ -31,34 +31,9 @@ class Ui_MainWindow(object):
         self.titleLabel.setFont(font)
         self.titleLabel.setFrameShadow(QFrame.Plain)
         self.titleLabel.setScaledContents(False)
-        # self.groupsTable = QScrollArea(self.centralwidget)
-        # self.groupsTable.setObjectName(u"groupsTable")
-        # self.groupsTable.setGeometry(QRect(30, 270, 711, 281))
-        # self.groupsTable.setWidgetResizable(True)
-        # self.scrollAreaWidgetContents = QWidget()
-        # self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        # self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 709, 279))
-        # self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
-        # self.verticalLayout.setObjectName(u"verticalLayout")
-        # self.tasksDivisionLayout_1 = QHBoxLayout()
-        # self.tasksDivisionLayout_1.setObjectName(u"tasksDivisionLayout_1")
-        # self.tasksDivisionLabel_1 = QLabel(self.scrollAreaWidgetContents)
-        # self.tasksDivisionLabel_1.setObjectName(u"tasksDivisionLabel_1")
-
-        # self.tasksDivisionLayout_1.addWidget(self.tasksDivisionLabel_1)
-
-        # self.tasksDivisionBox_1 = QSpinBox(self.scrollAreaWidgetContents)
-        # self.tasksDivisionBox_1.setObjectName(u"tasksDivisionBox_1")
-
-        # self.tasksDivisionLayout_1.addWidget(self.tasksDivisionBox_1)
-
-
-        # self.verticalLayout.addLayout(self.tasksDivisionLayout_1)
-
-        # self.groupsTable.setWidget(self.scrollAreaWidgetContents)
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(30, 130, 221, 92))
+        self.layoutWidget.setGeometry(QRect(30, 130, 234, 92))
         self.initialDataLayout = QFormLayout(self.layoutWidget)
         self.initialDataLayout.setObjectName(u"initialDataLayout")
         self.initialDataLayout.setContentsMargins(0, 0, 0, 0)
@@ -70,7 +45,7 @@ class Ui_MainWindow(object):
         self.classSizeBox = QSpinBox(self.layoutWidget)
         self.classSizeBox.setObjectName(u"classSizeBox")
         self.classSizeBox.setMinimum(1)
-        self.classSizeBox.setMaximum(200)
+        self.classSizeBox.setMaximum(10000)
 
         self.initialDataLayout.setWidget(0, QFormLayout.FieldRole, self.classSizeBox)
 
@@ -82,6 +57,7 @@ class Ui_MainWindow(object):
         self.groupsNumberBox = QSpinBox(self.layoutWidget)
         self.groupsNumberBox.setObjectName(u"groupsNumberBox")
         self.groupsNumberBox.setMinimum(1)
+        self.groupsNumberBox.setMaximum(1)
 
         self.initialDataLayout.setWidget(1, QFormLayout.FieldRole, self.groupsNumberBox)
 
@@ -93,12 +69,13 @@ class Ui_MainWindow(object):
         self.tasksNumberBox = QSpinBox(self.layoutWidget)
         self.tasksNumberBox.setObjectName(u"tasksNumberBox")
         self.tasksNumberBox.setMinimum(1)
+        self.tasksNumberBox.setMaximum(500)
 
         self.initialDataLayout.setWidget(2, QFormLayout.FieldRole, self.tasksNumberBox)
 
         self.examGenerationButton = QPushButton(self.centralwidget)
         self.examGenerationButton.setObjectName(u"examGenerationButton")
-        self.examGenerationButton.setGeometry(QRect(590, 560, 151, 25))
+        self.examGenerationButton.setGeometry(QRect(590, 570, 151, 25))
         self.groupsTableLabel = QLabel(self.centralwidget)
         self.groupsTableLabel.setObjectName(u"groupsTableLabel")
         self.groupsTableLabel.setGeometry(QRect(200, 240, 351, 20))
@@ -107,7 +84,23 @@ class Ui_MainWindow(object):
         self.examNameLabel.setGeometry(QRect(30, 80, 135, 17))
         self.examNameBox = QPlainTextEdit(self.centralwidget)
         self.examNameBox.setObjectName(u"examNameBox")
-        self.examNameBox.setGeometry(QRect(170, 70, 568, 29))
+        self.examNameBox.setGeometry(QRect(170, 70, 568, 31))
+        self.widget = QWidget(self.centralwidget)
+        self.widget.setObjectName(u"widget")
+        self.widget.setGeometry(QRect(20, 570, 331, 19))
+        self.horizontalLayout = QHBoxLayout(self.widget)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.assignedLabel = QLabel(self.widget)
+        self.assignedLabel.setObjectName(u"assignedLabel")
+
+        self.horizontalLayout.addWidget(self.assignedLabel)
+
+        self.assignedNumberLabel = QLabel(self.widget)
+        self.assignedNumberLabel.setObjectName(u"assignedNumberLabel")
+
+        self.horizontalLayout.addWidget(self.assignedNumberLabel)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -125,7 +118,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.titleLabel.setText(QCoreApplication.translate("MainWindow", u"Generator sprawdzian\u00f3w", None))
-        # self.tasksDivisionLabel_1.setText(QCoreApplication.translate("MainWindow", u"Grupa nr 1", None))
         self.classPeopleLabel.setText(QCoreApplication.translate("MainWindow", u"Liczba os\u00f3b w klasie", None))
         self.groupsNumberLabel.setText(QCoreApplication.translate("MainWindow", u"Liczba u\u0142o\u017conych grup", None))
         self.tasksNumberLabel.setText(QCoreApplication.translate("MainWindow", u"Liczba u\u0142o\u017conych zada\u0144", None))
@@ -133,5 +125,7 @@ class Ui_MainWindow(object):
         self.groupsTableLabel.setText(QCoreApplication.translate("MainWindow", u"Liczba dodatkowych os\u00f3b z zadaniami z danej grupy", None))
         self.examNameLabel.setText(QCoreApplication.translate("MainWindow", u"Nazwa sprawdzianu", None))
         self.examNameBox.setPlainText(QCoreApplication.translate("MainWindow", u"sprawdzian", None))
+        self.assignedLabel.setText(QCoreApplication.translate("MainWindow", u"Liczba os\u00f3b z przydzielonym zadaniem:", None))
+        self.assignedNumberLabel.setText(QCoreApplication.translate("MainWindow", u"1/1", None))
     # retranslateUi
 

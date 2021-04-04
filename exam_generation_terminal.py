@@ -49,12 +49,19 @@ def populate_word_doc(document, task_division):
         cell.add_paragraph()
         paragraph = cell.paragraphs[1]
         run = paragraph.add_run()
-        for task_number in range(1, tasks_number + 1):
-            run = paragraph.add_run()
-            current_task = task_division[person_number - 1][task_number - 1]
-            task_group_nums = current_task.split("_")
-            group_num = task_group_nums[1]
-            run.add_picture("zadania/" + group_num + f"/{task_number}" + ".png", width=Cm(17.5))
+        try:
+            for task_number in range(1, tasks_number + 1):
+                # cell.add_paragraph()
+                # paragraph = cell.add_paragraph()
+                run = paragraph.add_run()
+                current_task = task_division[person_number - 1][task_number - 1]
+                task_group_nums = current_task.split("_")
+                group_num = task_group_nums[1]
+                run.add_picture("zadania/" + group_num + f"/{task_number}" + ".png", width=Cm(17.5))
+        except Exception:
+            print("Niepoprawnie ustawiony folder z zadaniami. Popraw go i spróbuj ponownie.")
+            input("Wciśnij enter, żeby wyjść. ")
+            exit()
         cell.add_paragraph()
     make_rows_bold(table.rows[0])
     make_columns_bold(table.columns[0])

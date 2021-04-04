@@ -1,5 +1,5 @@
 from ui_mainwindow import Ui_MainWindow
-from PySide2.QtWidgets import QSpinBox, QLabel, QHBoxLayout, QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea
+from PySide2.QtWidgets import QSpinBox, QLabel, QHBoxLayout, QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, QMessageBox
 from PySide2.QtCore import QRect
 from PySide2.QtCore import QCoreApplication
 from exam_generation import get_task_division, create_word_doc, get_list_of_occurances
@@ -10,19 +10,30 @@ class ExamGeneratorWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
+        self.filling = []
         self.ui.setupUi(self)
         self.setupScrollArea()
         self.fillScrollArea()
+        self.task_boxes[0].valueChanged.connect(self.updateAssignment)
         self.initial_filling()
         self.ui.groupsNumberBox.valueChanged.connect(self.changeScrollArea)
         self.ui.classSizeBox.valueChanged.connect(self.peopleValueChange)
         self.ui.examGenerationButton.clicked.connect(self.create_doc)
+
+    def updateAssignment(self):
+        task_box_sum = 0
+        for box in self.task_boxes:
+            task_box_sum += box.value()
+        self.ui.assignedNumberLabel.setText(f"{task_box_sum + self.ui.groupsNumberBox.value()}/{self.ui.classSizeBox.value()}")
 
     def changeScrollArea(self):
         for item in self.task_layouts + self.task_boxes + self.task_labels:
             item.deleteLater()
         self.fillScrollArea()
         self.initial_filling()
+        for box in self.task_boxes:
+            box.valueChanged.connect(self.updateAssignment)
+        self.ui.assignedNumberLabel.setText(f"{sum(self.filling) + self.ui.groupsNumberBox.value()}/{self.ui.classSizeBox.value()}")
 
     def setupScrollArea(self):
         self.ui.groupsTable = QScrollArea(self.ui.centralwidget)
@@ -59,12 +70,25 @@ class ExamGeneratorWindow(QMainWindow):
     def peopleValueChange(self):
         self.ui.groupsNumberBox.setMaximum(self.ui.classSizeBox.value())
         self.initial_filling()
+        self.ui.assignedNumberLabel.setText(f"{sum(self.filling) + self.ui.groupsNumberBox.value()}/{self.ui.classSizeBox.value()}")
 
     def create_doc(self):
         people_number = self.ui.classSizeBox.value()
         groups_number = self.ui.groupsNumberBox.value()
         tasks_number = self.ui.tasksNumberBox.value()
-        group_task_divison = self.group_task_divison
+        group_task_divison = []
+        for box in self.task_boxes:
+            group_task_divison.append(box.value())
+        if sum(group_task_divison) + groups_number > people_number:
+            msg = QMessageBox(QMessageBox.Information, "Błąd!", "Przydzielono zadanie zbyt wielu osobom.")
+            msg.show()
+            msg.exec_()
+            return
+        if sum(group_task_divison) + groups_number < people_number:
+            msg = QMessageBox(QMessageBox.Information, "Błąd!", "Przydzielono zadanie za małej ilości osób.")
+            msg.show()
+            msg.exec_()
+            return
         filename = self.ui.examNameBox.toPlainText()
         info_table = []
         info_table.append(people_number)
@@ -72,21 +96,32 @@ class ExamGeneratorWindow(QMainWindow):
         info_table.append(tasks_number)
         info_table.append(group_task_divison)
         task_division = get_task_division(info_table)
-        create_word_doc(task_division, filename)
+        try:
+            create_word_doc(task_division, filename)
+        except Exception as e:
+            msg = QMessageBox(QMessageBox.Information, "Błąd!", f"Niepoprawnie ustawiony folder z zadaniami.")
+            msg.show()
+            msg.exec_()
+            return
         list_of_occurances = get_list_of_occurances(task_division)
+        msg = QMessageBox(QMessageBox.Information, "Sukces!", f"Poprawnie wygenerowano sprawdzian i zapisano go w pliku {filename}.docx.")
+        msg.show()
+        msg.exec_()
+
 
     def initial_filling(self):
         people_number = self.ui.classSizeBox.value()
         groups_number = self.ui.groupsNumberBox.value()
-        filling = [people_number // groups_number - 1]*(people_number - 1)
-        change = people_number % groups_number
-        if change:
-            filling.append(change)
-        else:
-            filling.append(people_number // groups_number - 1)
-        for box, number in zip(self.task_boxes, filling):
+        self.filling = [0]*(groups_number)
+        i = 0
+        while sum(self.filling) != people_number - groups_number:
+            self.filling[i] += 1
+            i += 1
+            i = i % groups_number
+        if not self.filling[-1]:
+            self.filling[-1] = people_number // groups_number - 1
+        for box, number in zip(self.task_boxes, self.filling):
             box.setValue(number)
-
 
 
 def guiMain(args):
