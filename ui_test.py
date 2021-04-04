@@ -2,7 +2,7 @@ from ui_mainwindow import Ui_MainWindow
 from PySide2.QtWidgets import QSpinBox, QLabel, QHBoxLayout, QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea
 from PySide2.QtCore import QRect
 from PySide2.QtCore import QCoreApplication
-from exam_generation import get_task_division
+from exam_generation import get_task_division, create_word_doc, get_list_of_occurances
 import sys
 
 
@@ -54,7 +54,22 @@ class ExamGeneratorWindow(QMainWindow):
             self.task_labels[i].setText(QCoreApplication.translate("MainWindow", f"Grupa nr {i+1}", None))
 
     def create_doc(self):
-        pass
+        people_number = self.ui.classSizeBox.value()
+        groups_number = self.ui.groupsNumberBox.value()
+        tasks_number = self.ui.tasksNumberBox.value()
+        group_task_divison = []
+        filename = self.ui.examNameBox.toPlainText()
+        for group in range(0, groups_number):
+            group_task_divison.append(self.task_boxes[group].value())
+        info_table = []
+        info_table.append(people_number)
+        info_table.append(groups_number)
+        info_table.append(tasks_number)
+        info_table.append(group_task_divison)
+        task_division = get_task_division(info_table)
+        create_word_doc(task_division, filename)
+        list_of_occurances = get_list_of_occurances(task_division)
+
 
 def guiMain(args):
     app = QApplication(args)
