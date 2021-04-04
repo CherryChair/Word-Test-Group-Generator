@@ -2,7 +2,6 @@ from groups import input_numbers, create_task_division
 from docx import Document
 from docx.shared import Cm
 from docx.enum.table import WD_TABLE_ALIGNMENT
-from time import sleep
 
 
 def get_task_division(doc_info):
@@ -57,9 +56,9 @@ def populate_word_doc(document, task_division):
                 run = paragraph.add_run()
                 current_task = task_division[person_number - 1][task_number - 1]
                 task_group_nums = current_task.split("_")
-                group_num = task_group_nums[1] 
+                group_num = task_group_nums[1]
                 run.add_picture("zadania/" + group_num + f"/{task_number}" + ".png", width=Cm(17.5))
-        except:
+        except Exception:
             print("Niepoprawnie ustawiony folder z zadaniami. Popraw go i spróbuj ponownie.")
             input("Wciśnij enter, żeby wyjść. ")
             exit()
@@ -78,7 +77,7 @@ def populate_word_doc(document, task_division):
 def get_list_of_occurances(task_division):
     list_of_occurances = []
     for i in range(1, len(task_division) + 1):
-        occurances_dict = {} 
+        occurances_dict = {}
         for j in range(0, len(task_division[0]) + 1):
             occurances_dict[j] = 0
         list_of_occurances.append(occurances_dict)
@@ -87,7 +86,7 @@ def get_list_of_occurances(task_division):
         for person in task_dict:
             same_elements = len(task_dict[number].intersection(task_dict[person]))
             list_of_occurances[number-1][same_elements] += 1
-        list_of_occurances[number-1][len(task_dict[1])]-=1
+        list_of_occurances[number-1][len(task_dict[1])] -= 1
     return list_of_occurances
 
 
@@ -98,7 +97,7 @@ def get_table_of_occurances(list_of_occurances):
         if number in [2, 3, 4]:
             titular_string += f"{number} powtórzenia".center(15)
         elif number == 1:
-            titular_string += f"1 powtórzenie".center(15)
+            titular_string += "1 powtórzenie".center(15)
         else:
             titular_string += f"{number} powtórzeń".center(15)
     titular_string += "\n"
@@ -120,7 +119,6 @@ def get_table_of_occurances(list_of_occurances):
 def create_word_doc(task_division, filename):
     word_doc = Document()
     populate_word_doc(word_doc, task_division)
-    
     word_doc.save("sprawdziany/" + filename + ".docx")
 
 
@@ -138,13 +136,13 @@ if __name__ == "__main__":
     table_of_occurances = create_table_of_occurances(task_division)
     print("\n" + table_of_occurances)
     while True:
-        user_choice = input("Wybierz opcję i zatwierdź enterem:\n1 - dla tych samych danych " + 
-                            "wylosuj inny rozkład zadań i zapisz w pliku o podanej wcześniej" + 
+        user_choice = input("Wybierz opcję i zatwierdź enterem:\n1 - dla tych samych danych " +
+                            "wylosuj inny rozkład zadań i zapisz w pliku o podanej wcześniej" +
                             " nazwie\n2 - to samo co 1, tylko zapisz w pliku o innej nazwie\n" +
                             "3 - wpisz nowe dane i wylosuj nowy plik\n0 - zapisz i wyjdź\nWybór opcji: ").strip()
         try:
             user_choice = int(user_choice)
-        except:
+        except Exception:
             continue
         if user_choice == 1:
             task_division = get_task_division(doc_info)
@@ -169,6 +167,3 @@ if __name__ == "__main__":
             table_of_occurances = create_table_of_occurances(task_division)
             print("\n" + table_of_occurances)
             continue
-    
-
-            

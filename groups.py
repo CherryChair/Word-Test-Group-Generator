@@ -23,7 +23,7 @@ def input_numbers():
                 print("Liczba dodatkowo przydzielonych zadań z grupy musi być nieujemna.")
                 continue
             break
-        except:
+        except Exception:
             print("To nie jest liczba")
     info_table = []
     info_table.append(people_number)
