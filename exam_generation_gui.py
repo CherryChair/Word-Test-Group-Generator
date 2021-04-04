@@ -1,7 +1,7 @@
 from ui_mainwindow import Ui_MainWindow
-from PySide2.QtWidgets import QSpinBox, QLabel, QHBoxLayout, QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, QMessageBox
-from PySide2.QtCore import QRect
-from PySide2.QtCore import QCoreApplication
+from PySide2.QtWidgets import QSpinBox, QLabel, QHBoxLayout, QApplication, QTableWidgetItem
+from PySide2.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QScrollArea, QMessageBox, QTableWidget
+from PySide2.QtCore import QCoreApplication, QRect
 from exam_generation import get_task_division, create_word_doc, get_list_of_occurances
 import sys
 
@@ -104,8 +104,30 @@ class ExamGeneratorWindow(QMainWindow):
             msg.exec_()
             return
         list_of_occurances = get_list_of_occurances(task_division)
-        msg = QMessageBox(QMessageBox.Information, "Sukces!", f"Poprawnie wygenerowano sprawdzian i zapisano go w pliku {filename}.docx.")
-        msg.show()
+        data = []
+        for item, i in zip(list_of_occurances, range(0, len(list_of_occurances))):
+            data.append([])
+            for key in item:
+                data[i].append(item[key])
+        msg = QWidget()
+        msg.setWindowTitle("Tabela powtórzeń")
+        msg.table = QTableWidget(people_number, tasks_number + 1)
+        msg.table.setObjectName('tableWidget')
+        horizontal_headers = ["0 powtórzeń", "1 powtórzenie", "2 powtórzenia", "3 powtórzenia", "4 powtórzenia"]
+        if tasks_number <= 4:
+            msg.table.setHorizontalHeaderLabels(horizontal_headers[:tasks_number + 1])
+        else:
+            for task_number in range(5, tasks_number + 1):
+                horizontal_headers += [f"{task_number} powtórzeń"]
+            msg.table.setHorizontalHeaderLabels(horizontal_headers)
+        for person_number in range(0, people_number):
+            for reapeted_tasks in range(0, tasks_number + 1):
+                item = QTableWidgetItem(str(list_of_occurances[person_number][reapeted_tasks]))
+                msg.table.setItem(person_number, reapeted_tasks, item)
+        msg.layout = QVBoxLayout()
+        msg.layout.addWidget(msg.table)
+        msg.setLayout(msg.layout)
+        msg.showMaximized()
         msg.exec_()
 
 
