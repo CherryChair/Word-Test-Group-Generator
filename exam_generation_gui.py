@@ -38,7 +38,7 @@ class ExamGeneratorWindow(QMainWindow):
     def setupScrollArea(self):
         self.ui.groupsTable = QScrollArea(self.ui.centralwidget)
         self.ui.groupsTable.setObjectName(u"groupsTable")
-        self.ui.groupsTable.setGeometry(QRect(30, 270, 980, 450))
+        self.ui.groupsTable.setGeometry(QRect(18, 300, 998, 420))
         self.ui.groupsTable.setWidgetResizable(True)
         self.ui.scrollAreaWidgetContents = QWidget()
         self.ui.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")

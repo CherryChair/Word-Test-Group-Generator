@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1046, 826)
+        MainWindow.resize(1032, 826)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.titleLabel = QLabel(self.centralwidget)
@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
 
         self.examGenerationButton = QPushButton(self.centralwidget)
         self.examGenerationButton.setObjectName(u"examGenerationButton")
-        self.examGenerationButton.setGeometry(QRect(880, 747, 151, 25))
+        self.examGenerationButton.setGeometry(QRect(864, 747, 151, 25))
         self.groupsTableLabel = QLabel(self.centralwidget)
         self.groupsTableLabel.setObjectName(u"groupsTableLabel")
         self.groupsTableLabel.setGeometry(QRect(345, 270, 351, 20))
@@ -106,7 +106,7 @@ class Ui_MainWindow(object):
         self.examNameLabel.setSizePolicy(sizePolicy)
         self.examNameBox = QPlainTextEdit(self.centralwidget)
         self.examNameBox.setObjectName(u"examNameBox")
-        self.examNameBox.setGeometry(QRect(190, 110, 521, 31))
+        self.examNameBox.setGeometry(QRect(190, 110, 831, 31))
         sizePolicy.setHeightForWidth(self.examNameBox.sizePolicy().hasHeightForWidth())
         self.examNameBox.setSizePolicy(sizePolicy)
         self.line = QFrame(self.centralwidget)
@@ -195,7 +195,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1046, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1032, 22))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
